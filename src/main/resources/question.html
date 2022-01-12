@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Questionnaire</h1>
+<div id="question"></div>
+
+</body>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    fetch(`/api/question?id=${urlParams.get("id")}`)
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("question").innerHTML = text;
+    });
+</script>
+</html>

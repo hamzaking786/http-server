@@ -1,0 +1,38 @@
+@startuml
+
+actor Browser
+participant HttpServer
+participant AnswerAlternativesController
+participant CreateQuestionController
+participant controllers
+participant AnswerDao
+participant QuestionDao
+participant IndexList
+database PERSON_DB
+
+Browser -> HttpServer: user post question/answer
+HttpServer -> controllers: sends message into controllers
+HttpServer <-- controllers: creating question/answer
+
+HttpServer -> CreateQuestionController: sends message to CreateQuestionController
+CreateQuestionController -> CreateQuestionController: question = new Question()
+CreateQuestionController -> QuestionDao: save,update, readFromResultSet, ect.
+
+HttpServer -> AnswerAlternativesController: sends message to AnswerAlternativesController
+QuestionDao ->  AnswerAlternativesController: Retrieves message and edit/update
+AnswerAlternativesController -> AnswerDao: QuestionDao: save, listAll,readFromResultSet, ect.
+
+QuestionDao -> PERSON_DB: save question in database
+AnswerDao -> PERSON_DB: save answer in database
+
+IndexList -> controllers
+IndexList -> QuestionDao
+IndexList -> AnswerDao
+IndexList -> IndexList: Detects and modifies question and answer options. Update in PERSON_DB when html refreshes
+IndexList -> PERSON_DB
+PERSON_DB -> HttpServer
+
+Browser <-- HttpServer: question/answer being posted
+
+@enduml
+
